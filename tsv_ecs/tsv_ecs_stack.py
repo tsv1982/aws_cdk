@@ -20,7 +20,7 @@ class TsvEcsStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        ecr_repository = ecr.Repository(self, "tsv-petclinic-repository", repository_name="ecs-petclinic-repository")
+      #  ecr_repository = ecr.Repository(self, "tsv-petclinic-repository", repository_name="ecs-petclinic-repository")
 
 
 
@@ -56,64 +56,79 @@ class TsvEcsStack(Stack):
         git_source = pipelines.CodePipelineSource.connection("tsv1982/petclinic-docker-jenkins", "ci-cd-cdk",
                      connection_arn="arn:aws:codestar-connections:eu-central-1:779113714568:connection/93b86f37-0210-4c36-b297-5ed5a32b7e72")
 
-        synth = pipelines.ShellStep("Synth",
-                                    input=git_source,
-                                  # commands=["mvn -B -Dspring-boot.run.profiles=mysql -DskipTests clean package", ]))
-                                    commands=["ls -la", ])
+        synth = ShellStep("Synth", input=git_source,
+                                   commands=["mvn -B -Dspring-boot.run.profiles=mysql -DskipTests clean package"])
+
+       # pipeline_synth = pipelines.CodePipeline(self, "Pipeline", synth=synth)
+
+
 
         sourceOutput = codepipeline.Artifact()
-        source_output = codepipeline.Artifact()
 
         invalidate_build_project = codebuild.PipelineProject(self, "InvalidateProject",
-                                                             build_spec=codebuild.BuildSpec.from_object({
-                                                                 "version": "0.2",
-                                                                 "phases": {
-                                                                     "build": {
-                                                                         "commands": [
-                                                                             "mvn -B -Dspring-boot.run.profiles=mysql -DskipTests clean package"
-                                                                             ]
-                                                                     }
-                                                                 }
+                                                        build_spec=codebuild.BuildSpec.from_object({
+                                                             "version": "0.2",
+                                                             "phases": {
+                                                                 "build": {"commands": ["mvn -B -Dspring-boot.run.profiles=mysql -DskipTests clean package"]}}
                                                              }))
 
 
-        stages = [codepipeline.StageProps(
-                  stage_name="Deploy",
-                  actions=[actions.CodeStarConnectionsSourceAction(
-                        action_name="tsvGit",
-                        owner="tsv1982",
-                        repo="petclinic-docker-jenkins",
-                        branch="ci-cd-cdk",
-                        connection_arn="arn:aws:codestar-connections:us-east-1:123456789012:connection/12345678-abcd-12ab-34cdef5678gh",
-                        output=sourceOutput,
-                        run_order=1),
+        pipeline = codepipeline.Pipeline(self, "Pipeline")
 
-                    actions.CodeBuildAction(
-                    action_name="Build",
-                    project=invalidate_build_project,
-                    input=sourceOutput,
-                    run_order=2)]
-                  ),
+        source_action = actions.CodeStarConnectionsSourceAction(
+                            action_name="Source",
+                            owner="tsv1982",
+                            repo="petclinic-docker-jenkins",
+                            branch="ci-cd-cdk",
+                            connection_arn="arn:aws:codestar-connections:eu-central-1:779113714568:connection/93b86f37-0210-4c36-b297-5ed5a32b7e72",
+                            output=sourceOutput,
+                            run_order=1)
 
+       
 
-        ]
-
-        pipeline = codepipeline.Pipeline(self, "Pipeline", stages=stages)
+        build_action = actions.CodeBuildAction(
+                          action_name="Build",
+                          project=invalidate_build_project,
+                          input=sourceOutput,
+                          run_order=2)
 
 
+        souce_stage = pipeline.add_stage(
+            stage_name="source",
+            actions=[source_action]
+        )
 
-        # source_stage = pipeline.add_stage(stage_name="Source")
+        build_stage = pipeline.add_stage(
+            stage_name="deploy",
+            actions=[build_action]
+        )
+
+
+
+        # source_stage = [codepipeline.StageProps(
+        #           stage_name="stage1",
+        #           actions=[actions.CodeStarConnectionsSourceAction(
+        #                 action_name="Source",
+        #                 owner="tsv1982",
+        #                 repo="petclinic-docker-jenkins",
+        #                 branch="ci-cd-cdk",
+        #                 connection_arn="arn:aws:codestar-connections:us-east-1:123456789012:connection/12345678-abcd-12ab-34cdef5678gh",
+        #                 output=sourceOutput,
+        #                 run_order=1),
         #
-        # source_stage.add_action(source_action)
+        #             actions.CodeBuildAction(
+        #             action_name="Build",
+        #             project=invalidate_build_project,
+        #             input=sourceOutput,
+        #             run_order=2)],
+        #           ),
+        #
+        # ]
+
+       # pipeline = codepipeline.Pipeline(self, "Pipeline", stages=source_stage)
 
 
 
-
-
-
-
-
-       # pipeline = pipelines.CodePipeline(self, "Pipeline", synth=[synth, dep])
 
 
 

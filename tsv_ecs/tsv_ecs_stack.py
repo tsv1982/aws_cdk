@@ -20,7 +20,7 @@ class TsvEcsStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        ecr_repository = ecr.Repository(self, "tsv-petclinic-repository", repository_name="ecs-petclinic-repository")
+     #   ecr_repository = ecr.Repository(self, "tsv-my-html", repository_name="ecs-tsv-my-html")
 
 
 
@@ -40,10 +40,10 @@ class TsvEcsStack(Stack):
         task_definition = ecs.FargateTaskDefinition(self, "tsv_task_definition", cpu=512, memory_limit_mib=2048,
                                                     execution_role=execution_role, family="tsv_task_definition")
 
-        image = ecs.ContainerImage.from_registry("tsv1982/petclinic_01")
-        container = task_definition.add_container("petclinic", image=image)
+        image = ecs.ContainerImage.from_registry("447506749563.dkr.ecr.eu-central-1.amazonaws.com/ecs-tsv-my-html:latest")
+        container = task_definition.add_container("myHtml", image=image)
 
-        container.add_port_mappings(ecs.PortMapping(container_port=8080, host_port=8080))
+        container.add_port_mappings(ecs.PortMapping(container_port=80, host_port=80))
 
         ecs_patterns.ApplicationLoadBalancedFargateService(self, "tsv-LB",
                                                        cluster=cluster,

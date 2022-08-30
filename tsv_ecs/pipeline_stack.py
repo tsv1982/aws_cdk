@@ -16,8 +16,8 @@ class PipelineStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        git_source = pipelines.CodePipelineSource.connection("tsv1982/petclinic-docker-jenkins", "ci-cd-cdk",
-                                                             connection_arn="arn:aws:codestar-connections:eu-central-1:779113714568:connection/93b86f37-0210-4c36-b297-5ed5a32b7e72")
+        git_source = pipelines.CodePipelineSource.connection("tsv1982/myHtml", "myHtml",
+                                                             connection_arn="arn:aws:codestar-connections:eu-central-1:447506749563:connection/e506d89c-9323-43d0-ad9d-de617349945d")
 
         sourceOutput = codepipeline.Artifact()
 
@@ -27,17 +27,11 @@ class PipelineStack(Stack):
 
                                                                  "version": "0.2",
                                                                  "phases": {
-                                                                     "install": {
-                                                                         "runtime-version": {
-                                                                             "java": "latest"
-                                                                         }
-                                                                     },
                                                                      "build": {"commands": [
-                                                                         "mvn -B -Dspring-boot.run.profiles=mysql -DskipTests clean package",
-                                                                         "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 779113714568.dkr.ecr.eu-central-1.amazonaws.com",
-                                                                         "docker build -t ecs-petclinic-repository .",
-                                                                         "docker tag ecs-petclinic-repository:latest 779113714568.dkr.ecr.eu-central-1.amazonaws.com/ecs-petclinic-repository:latest",
-                                                                         "docker push 779113714568.dkr.ecr.eu-central-1.amazonaws.com/ecs-petclinic-repository:latest"]}}
+                                                                         "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 447506749563.dkr.ecr.eu-central-1.amazonaws.com",
+                                                                         "docker build -t ecs-tsv-my-html .",
+                                                                         "docker tag ecs-tsv-my-html:latest 447506749563.dkr.ecr.eu-central-1.amazonaws.com/ecs-tsv-my-html:latest",
+                                                                         "docker push 447506749563.dkr.ecr.eu-central-1.amazonaws.com/ecs-tsv-my-html:latest"]}}
                                                              }))
 
 
@@ -64,9 +58,9 @@ class PipelineStack(Stack):
         source_action = actions.CodeStarConnectionsSourceAction(
             action_name="Source",
             owner="tsv1982",
-            repo="petclinic-docker-jenkins",
-            branch="ci-cd-cdk",
-            connection_arn="arn:aws:codestar-connections:eu-central-1:779113714568:connection/93b86f37-0210-4c36-b297-5ed5a32b7e72",
+            repo="myHtml",
+            branch="main",
+            connection_arn="arn:aws:codestar-connections:eu-central-1:447506749563:connection/e506d89c-9323-43d0-ad9d-de617349945d",
             output=sourceOutput,
             run_order=1)
 
@@ -86,24 +80,4 @@ class PipelineStack(Stack):
             actions=[build_action]
         )
 
-        # source_stage = [codepipeline.StageProps(
-        #           stage_name="stage1",
-        #           actions=[actions.CodeStarConnectionsSourceAction(
-        #                 action_name="Source",
-        #                 owner="tsv1982",
-        #                 repo="petclinic-docker-jenkins",
-        #                 branch="ci-cd-cdk",
-        #                 connection_arn="arn:aws:codestar-connections:us-east-1:123456789012:connection/12345678-abcd-12ab-34cdef5678gh",
-        #                 output=sourceOutput,
-        #                 run_order=1),
-        #
-        #             actions.CodeBuildAction(
-        #             action_name="Build",
-        #             project=invalidate_build_project,
-        #             input=sourceOutput,
-        #             run_order=2)],
-        #           ),
-        #
-        # ]
 
-    # pipeline = codepipeline.Pipeline(self, "Pipeline", stages=[source_stage])

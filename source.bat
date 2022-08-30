@@ -9,5 +9,5 @@ rem On Windows, this command just runs this batch file (the argument is ignored)
 rem
 rem Now we don't need to document a Windows command for activating a virtualenv.
 
-echo Executing .venv\Scripts\activate.bat for you
-.venv\Scripts\activate.bat
+echo Executing .venv\Scripts\activate for you
+.venv\Scripts\activate

@@ -16,9 +16,6 @@ class PipelineStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        git_source = pipelines.CodePipelineSource.connection("tsv1982/myHtml", "myHtml",
-                                                             connection_arn="arn:aws:codestar-connections:eu-central-1:447506749563:connection/e506d89c-9323-43d0-ad9d-de617349945d")
-
         sourceOutput = codepipeline.Artifact()
 
         invalidate_build_project = codebuild.PipelineProject(self, "InvalidateProject",

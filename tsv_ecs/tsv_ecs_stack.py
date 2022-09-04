@@ -16,7 +16,6 @@ from aws_cdk.pipelines import ShellStep
 from constructs import Construct
 
 class TsvEcsStack(Stack):
-
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
@@ -45,14 +44,14 @@ class TsvEcsStack(Stack):
 
         container.add_port_mappings(ecs.PortMapping(container_port=80, host_port=80))
 
-        ecs_patterns.ApplicationLoadBalancedFargateService(self, "tsv-LB",
+        alb_fargate_service = ecs_patterns.ApplicationLoadBalancedFargateService(self, "tsv-LB",
                                                        cluster=cluster,
                                                        task_definition=task_definition,
                                                        desired_count=2,
                                                        cpu=512,
                                                        memory_limit_mib=2048,
                                                        public_load_balancer=True)
-
+        self.service = alb_fargate_service.service
 
 
 

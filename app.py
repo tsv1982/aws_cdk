@@ -6,7 +6,7 @@ from tsv_ecs.tsv_ecs_stack import TsvEcsStack
 from tsv_ecs.pipeline_stack import PipelineStack
 
 app = cdk.App()
-TsvEcsStack(app, "TsvEcsStack", )
-PipelineStack(app, "PipelineStack", )
+ecs_stack = TsvEcsStack(app, "TsvEcsStack", )
+pipeline_stack = PipelineStack(app, "PipelineStack", service=ecs_stack.service)
 
 app.synth()

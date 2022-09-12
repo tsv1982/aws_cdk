@@ -35,7 +35,7 @@ class TsvEcsStack(Stack):
             "DB_USER": ecs.Secret.from_secrets_manager(db_secret, 'username'),
             "DB_PASS": ecs.Secret.from_secrets_manager(db_secret, 'password'),
         }, environment={"DB_NAME": "postgres"})
-        container.add_port_mappings(ecs.PortMapping(container_port=8080, host_port=8080))
+        container.add_port_mappings(ecs.PortMapping(container_port=8080))
 
         alb_fargate_service = ecs_patterns.ApplicationLoadBalancedFargateService(self, "tsv-LB-hellow",
                                                                                  cluster=cluster,

@@ -5,7 +5,7 @@ from aws_cdk import (
     aws_iam as iam,
     aws_secretsmanager as secrets,
     aws_ecs_patterns as ecs_patterns,
-
+aws_logs as logs,
 )
 
 from constructs import Construct
@@ -34,7 +34,8 @@ class TsvEcsStack(Stack):
             "DB_HOST": ecs.Secret.from_secrets_manager(db_secret, 'host'),
             "DB_USER": ecs.Secret.from_secrets_manager(db_secret, 'username'),
             "DB_PASS": ecs.Secret.from_secrets_manager(db_secret, 'password'),
-        }, environment={"DB_NAME": "postgres"})
+        }, environment={"DB_NAME": "postgres"},
+                                                  logging=ecs.LogDriver.aws_logs(stream_prefix='stara'))
         container.add_port_mappings(ecs.PortMapping(container_port=8080))
 
         alb_fargate_service = ecs_patterns.ApplicationLoadBalancedFargateService(self, "tsv-LB-hellow",
@@ -43,5 +44,6 @@ class TsvEcsStack(Stack):
                                                                                  desired_count=2,
                                                                                  cpu=512,
                                                                                  memory_limit_mib=2048,
+
                                                                                  public_load_balancer=True)
         self.service = alb_fargate_service.service

@@ -27,7 +27,7 @@ class PipelineStack(Stack):
                                                                  "phases": {
                                                                      "pre_build": {
                                                                          "commands": [
-                                                                             'REPOSITORY_URI=749874650085.dkr.ecr.eu-central-1.amazonaws.com/hello:latest',
+                                                                             'REPOSITORY_URI=749874650085.dkr.ecr.eu-central-1.amazonaws.com/hello',
                                                                              'COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)',
                                                                              'IMAGE_TAG=${COMMIT_HASH:=latest}',
                                                                              "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 749874650085.dkr.ecr.eu-central-1.amazonaws.com"
@@ -38,7 +38,7 @@ class PipelineStack(Stack):
                                                                          "docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG",
                                                                          "docker push $REPOSITORY_URI:$IMAGE_TAG",
                                                                          "docker push $REPOSITORY_URI:latest",
-                                                                         'printf \'[{"name":"myHtml","imageUri":"%s"}]\' "$REPOSITORY_URI:$IMAGE_TAG" > imagedefinitions.json'
+                                                                         'printf \'[{"name":"hello","imageUri":"%s"}]\' "$REPOSITORY_URI:$IMAGE_TAG" > imagedefinitions.json'
                                                                      ]}},
                                                                  'artifacts': {
                                                                      'files': [
@@ -76,6 +76,7 @@ class PipelineStack(Stack):
             run_order=1)
 
         build_output = codepipeline.Artifact()
+
         build_action = actions.CodeBuildAction(
             action_name="Build",
             project=invalidate_build_project,
@@ -97,10 +98,11 @@ class PipelineStack(Stack):
             action_name="DeployAction",
             service=service,
             input=build_output,
-            deployment_timeout=Duration.minutes(60)
+            deployment_timeout=Duration.minutes(60),
+            run_order=3
         )
 
         deploy_stage = pipeline.add_stage(
             stage_name="deploy",
-            actions=[deploy_action]
+            actions=[deploy_action],
         )

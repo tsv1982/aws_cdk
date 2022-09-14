@@ -29,10 +29,10 @@ class RdsStack(Stack):
                                                                             ec2.InstanceSize.MEDIUM),
                                           vpc=vpc,
                                           vpc_subnets=ec2.SubnetSelection(
-                                              subnet_type=ec2.SubnetType.PRIVATE_WITH_NAT),
+                                              subnet_type=ec2.SubnetType.PUBLIC),
                                           publicly_accessible=True
+
                                       )
                                       )
+        cluster.connections.allow_from_any_ipv4(ec2.Port.all_traffic(), "Open to the world")
 
-
-# cluster.connections.allowDefaultPortFromAnyIpv4()

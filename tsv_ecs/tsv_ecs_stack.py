@@ -29,8 +29,8 @@ class TsvEcsStack(Stack):
         task_definition = ecs.FargateTaskDefinition(self, "tsv_task_definition_hellow", cpu=512, memory_limit_mib=2048,
                                                     execution_role=execution_role, family="tsv_task_definition_hellow")
 
-        image = ecs.ContainerImage.from_registry("749874650085.dkr.ecr.eu-central-1.amazonaws.com/hello:latest")
-        container = task_definition.add_container("hello", image=image, secrets={
+        image = ecs.ContainerImage.from_registry("571847562388.dkr.ecr.eu-central-1.amazonaws.com/tsv-hello:latest")
+        container = task_definition.add_container("tsv-hello", image=image, secrets={
             "DB_HOST": ecs.Secret.from_secrets_manager(db_secret, 'host'),
             "DB_USER": ecs.Secret.from_secrets_manager(db_secret, 'username'),
             "DB_PASS": ecs.Secret.from_secrets_manager(db_secret, 'password'),

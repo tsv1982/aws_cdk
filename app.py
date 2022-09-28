@@ -8,7 +8,7 @@ from tsv_ecs.pipeline_stack import PipelineStack
 from tsv_ecs.rds_stack import RdsStack
 from tsv_ecs.networking_stack import NetworkingStack
 
-db_creds_arn = "arn:aws:secretsmanager:eu-central-1:749874650085:secret:rdsCreds-Cs7lQ3"
+db_creds_arn = "arn:aws:secretsmanager:eu-central-1:571847562388:secret:secretDB-k7uD0M"
 
 app = cdk.App()
 networking_stack = NetworkingStack(app, "Networking")

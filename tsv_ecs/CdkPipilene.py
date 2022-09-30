@@ -38,7 +38,7 @@ class CdkPipeline(Stack):
             def __init__(self, scope, id, *, env=None, outdir=None):
                 super().__init__(scope, id, env=env, outdir=outdir)
 
-                db_stack = RdsStack(self, "Database")
+                db_stack = RdsStack(self, "RdsStack")
 
 
         ordered_steps = pipelines.Step.sequence([shell_step1, shell_step2, shell_step3])

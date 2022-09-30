@@ -42,8 +42,8 @@ class CdkPipeline(Stack):
                 ecs_stack = TsvEcsStack(self, "TsvEcsStack", vpc=networking_stack.vpc, db_secret=rds_stack.db_credentials)
                 pipeline_stack = PipelineStack(self, "PipelineStack", service=ecs_stack.service)
 
-        network_stage = pipeline.add_stage(MyApplication(self, "Networking"))
-        rds_stage = pipeline.add_stage(MyApplication(self, "RdsStack"))
-        esc_stage = pipeline.add_stage(MyApplication(self, "TsvEcsStack"))
-        pipeline_stage = pipeline.add_stage(MyApplication(self, "PipelineStack"))
+        network_stage = pipeline.add_stage(MyApplication(self, "MyPipeline"))
+        # rds_stage = pipeline.add_stage(MyApplication(self, "RdsStack"))
+        # esc_stage = pipeline.add_stage(MyApplication(self, "TsvEcsStack"))
+        # pipeline_stage = pipeline.add_stage(MyApplication(self, "PipelineStack"))
 

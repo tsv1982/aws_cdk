@@ -6,6 +6,7 @@ from aws_cdk import (
 
 from constructs import Construct
 
+import tsv_ecs.rds_stack
 from tsv_ecs.rds_stack import RdsStack
 
 
@@ -25,11 +26,23 @@ class CdkPipeline(Stack):
                                                                     commands=["pip install -r requirements.txt",
                                                                               "npm install -g aws-cdk", "cdk synth"]
                                                                     ),
+                                          self_mutation=True,
 
                                           )
 
-        ordered_steps = pipelines.Step.sequence([
-            pipelines.ManualApprovalStep("build"),
+        shell_step1 = pipelines.ShellStep("Creating csv file", commands=["touch casa.csv"])
+        shell_step2 = pipelines.ShellStep("Creating", commands=["touch cisa.csv"])
+        shell_step3 = pipelines.ShellStep("printing", commands=["ls"])
 
-        ])
+        class MyApplication(Stage):
+            def __init__(self, scope, id, *, env=None, outdir=None):
+                super().__init__(scope, id, env=env, outdir=outdir)
+
+                db_stack = RdsStack(self, "Database")
+
+
+        ordered_steps = pipelines.Step.sequence([shell_step1, shell_step2, shell_step3])
+        app_stage = pipeline.add_stage(MyApplication(self, "RdsStack"),
+                                       pre=ordered_steps,
+                                       )
 

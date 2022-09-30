@@ -1,5 +1,6 @@
 from aws_cdk import (
     Stack,
+    Stage,
     aws_rds as rds,
     aws_ec2 as ec2,
     aws_secretsmanager as secrets,
@@ -11,11 +12,15 @@ from constructs import Construct
 
 class RdsStack(Stack):
 
-    def __init__(self, scope: Construct, construct_id: str, vpc: ec2.Vpc, creds_arn: str, **kwargs) -> None:
+    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        self.db_credentials = secrets.Secret.from_secret_complete_arn(self, "creds", secret_complete_arn=creds_arn)
+        vpc = ec2.Vpc(self, "tsv-vpc-hellow", cidr="10.0.0.0/22", max_azs=3)
+        db_creds_arn = "arn:aws:secretsmanager:eu-central-1:571847562388:secret:secretDB-k7uD0M"
+
+        self.db_credentials = secrets.Secret.from_secret_complete_arn(self, "creds", secret_complete_arn=db_creds_arn)
         self.credentials = rds.Credentials.from_secret(self.db_credentials)
+
 
         cluster = rds.DatabaseCluster(self, "Database", engine=rds.DatabaseClusterEngine.aurora_postgres(
             version=rds.AuroraPostgresEngineVersion.VER_11_16),

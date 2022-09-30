@@ -30,8 +30,6 @@ class CdkPipeline(Stack):
 
                                           )
 
-        shell_step1 = pipelines.ShellStep("Creating csv file", commands=["touch casa.csv"])
-        shell_step2 = pipelines.ShellStep("Creating", commands=["touch cisa.csv"])
         shell_step3 = pipelines.ShellStep("printing", commands=["ls"])
 
         class MyApplication(Stage):
@@ -40,9 +38,7 @@ class CdkPipeline(Stack):
 
                 db_stack = RdsStack(self, "RdsStack")
 
-
-        ordered_steps = pipelines.Step.sequence([shell_step1, shell_step2, shell_step3])
+        ordered_steps = pipelines.Step.sequence([shell_step3])
         app_stage = pipeline.add_stage(MyApplication(self, "RdsStack"),
                                        pre=ordered_steps,
                                        )
-

@@ -8,6 +8,8 @@ from constructs import Construct
 
 from tsv_ecs.networking_stack import NetworkingStack
 from tsv_ecs.rds_stack import RdsStack
+from tsv_ecs.tsv_ecs_stack import TsvEcsStack
+from tsv_ecs.pipeline_stack import PipelineStack
 
 
 class CdkPipeline(Stack):
@@ -30,17 +32,18 @@ class CdkPipeline(Stack):
 
                                           )
 
-        shell_step3 = pipelines.ShellStep("printing", commands=["ls -la"])
-
         class MyApplication(Stage):
             def __init__(self, scope, id, *, env=None, outdir=None):
                 super().__init__(scope, id, env=env, outdir=outdir)
+                db_creds_arn = "arn:aws:secretsmanager:eu-central-1:571847562388:secret:secretDB-k7uD0M"
 
-                db_stack = RdsStack(self, "RdsStack")
-                network_stack = NetworkingStack(self, "Networking")
+                networking_stack = NetworkingStack(self, "Networking")
+                rds_stack = RdsStack(self, "RdsStack", vpc=networking_stack.vpc, creds_arn=db_creds_arn)
+                ecs_stack = TsvEcsStack(self, "TsvEcsStack", vpc=networking_stack.vpc, db_secret=rds_stack.db_credentials)
+                pipeline_stack = PipelineStack(self, "PipelineStack", service=ecs_stack.service)
 
-        ordered_steps = pipelines.Step.sequence([shell_step3])
         network_stage = pipeline.add_stage(MyApplication(self, "Networking"))
-        app_stage = pipeline.add_stage(MyApplication(self, "RdsStack"),
-                                       pre=ordered_steps,
-                                       )
+        rds_stage = pipeline.add_stage(MyApplication(self, "RdsStack"))
+        esc_stage = pipeline.add_stage(MyApplication(self, "TsvEcsStack"))
+        pipeline_stage = pipeline.add_stage(MyApplication(self, "PipelineStack"))
+

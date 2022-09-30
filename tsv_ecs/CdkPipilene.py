@@ -30,7 +30,7 @@ class CdkPipeline(Stack):
 
                                           )
 
-        shell_step3 = pipelines.ShellStep("printing", commands=["ls"])
+        shell_step3 = pipelines.ShellStep("printing", commands=["ls -la"])
 
         class MyApplication(Stage):
             def __init__(self, scope, id, *, env=None, outdir=None):

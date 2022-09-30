@@ -32,18 +32,18 @@ class CdkPipeline(Stack):
 
                                           )
 
-        class MyApplication(Stage):
-            def __init__(self, scope, id, *, env=None, outdir=None):
-                super().__init__(scope, id, env=env, outdir=outdir)
-                db_creds_arn = "arn:aws:secretsmanager:eu-central-1:571847562388:secret:secretDB-k7uD0M"
-
-                networking_stack = NetworkingStack(self, "Networking")
-                rds_stack = RdsStack(self, "RdsStack", vpc=networking_stack.vpc, creds_arn=db_creds_arn)
-                ecs_stack = TsvEcsStack(self, "TsvEcsStack", vpc=networking_stack.vpc, db_secret=rds_stack.db_credentials)
-                pipeline_stack = PipelineStack(self, "PipelineStack", service=ecs_stack.service)
-
         network_stage = pipeline.add_stage(MyApplication(self, "MyPipeline"))
-        # rds_stage = pipeline.add_stage(MyApplication(self, "RdsStack"))
-        # esc_stage = pipeline.add_stage(MyApplication(self, "TsvEcsStack"))
-        # pipeline_stage = pipeline.add_stage(MyApplication(self, "PipelineStack"))
+
+
+class MyApplication(Stage):
+    def __init__(self, scope, id, *, env=None, outdir=None):
+        super().__init__(scope, id, env=env, outdir=outdir)
+        db_creds_arn = "arn:aws:secretsmanager:eu-central-1:571847562388:secret:secretDB-k7uD0M"
+
+        networking_stack = NetworkingStack(self, "Networking")
+        rds_stack = RdsStack(self, "RdsStack", vpc=networking_stack.vpc, creds_arn=db_creds_arn)
+        ecs_stack = TsvEcsStack(self, "TsvEcsStack", vpc=networking_stack.vpc, db_secret=rds_stack.db_credentials)
+        pipeline_stack = PipelineStack(self, "PipelineStack", service=ecs_stack.service)
+
+
 

@@ -6,7 +6,7 @@ from aws_cdk import (
 
 from constructs import Construct
 
-import tsv_ecs.rds_stack
+from tsv_ecs.networking_stack import NetworkingStack
 from tsv_ecs.rds_stack import RdsStack
 
 
@@ -37,8 +37,10 @@ class CdkPipeline(Stack):
                 super().__init__(scope, id, env=env, outdir=outdir)
 
                 db_stack = RdsStack(self, "RdsStack")
+                network_stack = NetworkingStack(self, "Networking")
 
         ordered_steps = pipelines.Step.sequence([shell_step3])
+        network_stage = pipeline.add_stage(MyApplication(self, "Networking"))
         app_stage = pipeline.add_stage(MyApplication(self, "RdsStack"),
                                        pre=ordered_steps,
                                        )

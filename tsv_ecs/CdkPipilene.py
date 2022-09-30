@@ -43,6 +43,7 @@ class MyApplication(Stage):
         networking_stack = NetworkingStack(self, "Networking")
         rds_stack = RdsStack(self, "RdsStack", vpc=networking_stack.vpc, creds_arn=db_creds_arn)
         ecs_stack = TsvEcsStack(self, "TsvEcsStack", vpc=networking_stack.vpc, db_secret=rds_stack.db_credentials)
+        ecs_stack.add_dependency(rds_stack)
         pipeline_stack = PipelineStack(self, "PipelineStack", service=ecs_stack.service)
 
 

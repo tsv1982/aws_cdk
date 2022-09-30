@@ -18,6 +18,4 @@ app = cdk.App()
 ckd_pipeline = CdkPipeline(app, "CdkPipeline")
 
 
-
-
 app.synth()

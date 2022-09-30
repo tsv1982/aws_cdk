@@ -10,7 +10,7 @@ class NetworkingStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        self.vpc = ec2.Vpc(self, "tsv-vpc-hellow", cidr="10.0.0.0/22", max_azs=3)
+        self.vpc = ec2.Vpc(self, "tsv-vpc", cidr="10.0.0.0/22", max_azs=3)
 
 
 

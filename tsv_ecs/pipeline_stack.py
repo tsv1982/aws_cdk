@@ -18,7 +18,7 @@ class PipelineStack(Stack):
         CONNECTION_ARN = "arn:aws:codestar-connections:ap-northeast-1:571847562388:connection/200c13ec-a117-4efb-b81c-0b93cba32197"
         source_output = codepipeline.Artifact()
 
-        invalidate_build_project = codebuild.PipelineProject(self, "InvalidateProject",
+        build_project = codebuild.PipelineProject(self, "Build",
                                                              environment=codebuild.BuildEnvironment(privileged=True),
                                                              build_spec=codebuild.BuildSpec.from_object({
 

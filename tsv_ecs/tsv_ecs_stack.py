@@ -29,8 +29,8 @@ class TsvEcsStack(Stack):
         task_definition = ecs.FargateTaskDefinition(self, "tsv_task_definition_hellow", cpu=512, memory_limit_mib=2048,
                                                     execution_role=execution_role, family="tsv_task_definition_hellow")
 
-        image = ecs.ContainerImage.from_registry("571847562388.dkr.ecr.eu-central-1.amazonaws.com/tsv-hello:latest")
-        container = task_definition.add_container("tsv-hello", image=image, secrets={
+        image = ecs.ContainerImage.from_registry("571847562388.dkr.ecr.eu-central-1.amazonaws.com/.venv-hello:latest")
+        container = task_definition.add_container(".venv-hello", image=image, secrets={
             "DB_HOST": ecs.Secret.from_secrets_manager(db_secret, 'host'),
             "DB_USER": ecs.Secret.from_secrets_manager(db_secret, 'username'),
             "DB_PASS": ecs.Secret.from_secrets_manager(db_secret, 'password'),
@@ -38,7 +38,7 @@ class TsvEcsStack(Stack):
                                                   logging=ecs.LogDriver.aws_logs(stream_prefix='stara'))
         container.add_port_mappings(ecs.PortMapping(container_port=8080))
 
-        alb_fargate_service = ecs_patterns.ApplicationLoadBalancedFargateService(self, "tsv-LB-hellow",
+        alb_fargate_service = ecs_patterns.ApplicationLoadBalancedFargateService(self, ".venv-LB-hellow",
                                                                                  cluster=cluster,
                                                                                  task_definition=task_definition,
                                                                                  desired_count=2,

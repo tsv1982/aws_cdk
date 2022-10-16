@@ -1,5 +1,6 @@
 from aws_cdk import (
     Stack,
+    Stage,
     aws_rds as rds,
     aws_ec2 as ec2,
     aws_secretsmanager as secrets,
@@ -35,4 +36,3 @@ class RdsStack(Stack):
                                       )
                                       )
         cluster.connections.allow_from_any_ipv4(ec2.Port.all_traffic(), "Open to the world")
-

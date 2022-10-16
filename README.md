@@ -28,13 +28,13 @@ $ source .venv/bin/activate
 If you are a Windows platform, you would activate the virtualenv like this:
 
 ```
-% .venv\Scripts\activate.bat
+% .venv\Scripts\activate
 ```
 
 Once the virtualenv is activated, you can install the required dependencies.
 
 ```
-$ pip install -r requirements.txt
+$ pip install -r tsv_ecs/lib/requirements.txt
 ```
 
 At this point you can now synthesize the CloudFormation template for this code.

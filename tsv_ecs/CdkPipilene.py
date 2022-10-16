@@ -35,7 +35,7 @@ class CdkPipeline(Stack):
         network_stage = pipeline.add_stage(MyApplication(self, "MyPipeline"))
 
 
-class MyApplication(Stage):
+class InfrastructureStage(Stage):
     def __init__(self, scope, id, *, env=None, outdir=None):
         super().__init__(scope, id, env=env, outdir=outdir)
         db_creds_arn = "arn:aws:secretsmanager:eu-central-1:571847562388:secret:secretDB-k7uD0M"

@@ -9,10 +9,6 @@ from tsv_ecs.networking_stack import NetworkingStack
 from tsv_ecs.CdkPipilene import CdkPipeline
 
 app = cdk.App()
-#networking_stack = NetworkingStack(app, "Networking")
-#rds_stack = RdsStack(app, "RdsStack", vpc=networking_stack.vpc, creds_arn=db_creds_arn)
-#ecs_stack = TsvEcsStack(app, "TsvEcsStack", vpc=networking_stack.vpc, db_secret=rds_stack.db_credentials)
-#pipeline_stack = PipelineStack(app, "PipelineStack", service=ecs_stack.service)
 cdk_pipeline = CdkPipeline(app, "CdkPipeline")
 
 

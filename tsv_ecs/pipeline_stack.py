@@ -15,7 +15,7 @@ class PipelineStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, service, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        connection_arn = "arn:aws:codestar-connections:ap-northeast-1:571847562388:connection/200c13ec-a117-4efb-b81c-0b93cba32197"
+        CONNECTION_ARN = "arn:aws:codestar-connections:ap-northeast-1:571847562388:connection/200c13ec-a117-4efb-b81c-0b93cba32197"
         source_output = codepipeline.Artifact()
 
         invalidate_build_project = codebuild.PipelineProject(self, "InvalidateProject",

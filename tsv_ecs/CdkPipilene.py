@@ -29,7 +29,6 @@ class CdkPipeline(Stack):
                                                                               "npm install -g aws-cdk", "cdk synth"]
                                                                     ),
                                           self_mutation=True,
-
                                           )
 
         network_stage = pipeline.add_stage(MyApplication(self, "MyPipeline"))

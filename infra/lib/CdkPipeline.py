@@ -6,10 +6,10 @@ from aws_cdk import (
 
 from constructs import Construct
 
-from tsv_ecs.networking_stack import NetworkingStack
-from tsv_ecs.rds_stack import RdsStack
-from tsv_ecs.tsv_ecs_stack import TsvEcsStack
-from tsv_ecs.pipeline_stack import PipelineStack
+from infra.lib.networking_stack import NetworkingStack
+from infra.lib.rds_stack import RdsStack
+from infra.lib.tsv_ecs_stack import TsvEcsStack
+from infra.lib.pipeline_stack import PipelineStack
 
 DB_CREDS_ARN = "arn:aws:secretsmanager:eu-central-1:571847562388:secret:secretDB-k7uD0M"
 
@@ -24,8 +24,6 @@ class CdkPipeline(Stack):
 
         pipeline = pipelines.CodePipeline(self, "Pipeline",
                                           synth=pipelines.ShellStep("Synth",
-                                                                    # Use a connection created using the AWS console to authenticate to GitHub
-                                                                    # Other sources are available.
                                                                     input=source_output,
                                                                     commands=["pip install -r requirements.txt",
                                                                               "npm install -g aws-cdk", "cdk synth"]
@@ -33,7 +31,7 @@ class CdkPipeline(Stack):
                                           self_mutation=True,
                                           )
 
-        network_stage = pipeline.add_stage(InfrastructureStage(self, "MyPipeline"))
+        pipeline.add_stage(InfrastructureStage(self, "infra"))
 
 
 class InfrastructureStage(Stage):

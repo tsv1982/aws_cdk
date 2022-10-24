@@ -1,10 +1,8 @@
 from aws_cdk import (
     Stack,
-    Stage,
     aws_rds as rds,
     aws_ec2 as ec2,
     aws_secretsmanager as secrets,
-    aws_connect as connect
 )
 
 from constructs import Construct
@@ -20,19 +18,14 @@ class RdsStack(Stack):
 
         cluster = rds.DatabaseCluster(self, "Database", engine=rds.DatabaseClusterEngine.aurora_postgres(
             version=rds.AuroraPostgresEngineVersion.VER_11_16),
-                                      # AuroraMysqlEngineVersion.of(aurora_mysql_full_version="5.7.mysql_aurora.2.08.1")),
                                       credentials=self.credentials,
-                                      # Optional - will default to 'admin' username and generated password
                                       instance_props=rds.InstanceProps(
-                                          # optional , defaults to t3.medium
-
                                           instance_type=ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE3,
                                                                             ec2.InstanceSize.MEDIUM),
                                           vpc=vpc,
                                           vpc_subnets=ec2.SubnetSelection(
                                               subnet_type=ec2.SubnetType.PUBLIC),
                                           publicly_accessible=True
-
                                       )
                                       )
         cluster.connections.allow_from_any_ipv4(ec2.Port.all_traffic(), "Open to the world")

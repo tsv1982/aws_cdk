@@ -2,7 +2,7 @@
 
 import aws_cdk as cdk
 
-from tsv_ecs.CdkPipeline import CdkPipeline
+from infra.lib.CdkPipeline import CdkPipeline
 
 app = cdk.App()
 cdk_pipeline = CdkPipeline(app, "CdkPipeline")

@@ -6,10 +6,10 @@ from aws_cdk import (
 
 from constructs import Construct
 
-from infra.lib.networking_stack import NetworkingStack
-from infra.lib.rds_stack import RdsStack
-from infra.lib.tsv_ecs_stack import TsvEcsStack
-from infra.lib.pipeline_stack import PipelineStack
+from lib.networking_stack import NetworkingStack
+from lib.rds_stack import RdsStack
+from lib.tsv_ecs_stack import TsvEcsStack
+from lib.pipeline_stack import PipelineStack
 
 DB_CREDS_ARN = "arn:aws:secretsmanager:eu-central-1:571847562388:secret:secretDB-k7uD0M"
 

@@ -5,7 +5,6 @@ from aws_cdk import (
     aws_iam as iam,
     aws_secretsmanager as secrets,
     aws_ecs_patterns as ecs_patterns,
-aws_logs as logs,
 )
 
 from constructs import Construct

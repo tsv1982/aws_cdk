@@ -4,7 +4,6 @@ from aws_cdk import (
     aws_codepipeline as codepipeline,
     aws_codepipeline_actions as actions,
     aws_iam as iam, Duration
-
 )
 
 from constructs import Construct
@@ -22,7 +21,6 @@ class PipelineStack(Stack):
         build_project = codebuild.PipelineProject(self, "Build",
                                                   environment=codebuild.BuildEnvironment(privileged=True),
                                                   build_spec=codebuild.BuildSpec.from_object({
-
                                                       "version": "0.2",
                                                       "phases": {
                                                           "pre_build": {
@@ -48,7 +46,6 @@ class PipelineStack(Stack):
                                                   }))
 
         build_project.role.add_to_policy(iam.PolicyStatement(actions=[
-
             "ecr:BatchCheckLayerAvailability",
             "ecr:GetDownloadUrlForLayer",
             "ecr:BatchGetImage",
@@ -57,11 +54,8 @@ class PipelineStack(Stack):
             "ecr:InitiateLayerUpload",
             "ecr:UploadLayerPart",
             "ecr:CompleteLayerUpload"
-
         ],
-
             effect=iam.Effect.ALLOW,
-
             resources=["*"]))
 
         pipeline = codepipeline.Pipeline(self, "Pipeline_hellow")

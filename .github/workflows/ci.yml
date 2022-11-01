@@ -14,13 +14,14 @@ jobs:
       - name: checkout repo content
         uses: actions/checkout@v2
 
+      - name: install aws-cdk
+        run: npm install -g aws-cdk
+
       - name: install python packages
         run: |
           python -m pip install --upgrade pip
-          npm install -g aws-cdk
           pip install -r requirements.txt
 
       - name: cdk list
-        run: |
-          cdk list
+        run: cdk list
       

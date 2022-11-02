@@ -17,7 +17,7 @@ jobs:
       - name: checkout repo content
         uses: actions/checkout@v3
         with:
-           ref: ${{ github.ref }}
+           ref: ${{ github.head_ref }}
 
       - name: install aws-cdk
         run: npm install -g aws-cdk

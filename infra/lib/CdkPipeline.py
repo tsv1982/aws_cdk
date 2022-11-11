@@ -25,7 +25,7 @@ class CdkPipeline(Stack):
         pipeline = pipelines.CodePipeline(self, "Pipeline",
                                           synth=pipelines.ShellStep("Synth",
                                                                     input=source_output,
-                                                                    commands=["pip install -r requirements.txt",
+                                                                    commands=["pip install -r ./infra/requirements.txt",
                                                                               "npm install -g aws-cdk", "cdk synth"]
                                                                     ),
                                           self_mutation=True,

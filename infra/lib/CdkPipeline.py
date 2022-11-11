@@ -11,7 +11,7 @@ from infra.lib.rds_stack import RdsStack
 from infra.lib.tsv_ecs_stack import TsvEcsStack
 from infra.lib.pipeline_stack import PipelineStack
 
-DB_CREDS_ARN = "arn:aws:secretsmanager:eu-central-1:571847562388:secret:secretDB-k7uD0M"
+DB_CREDS_ARN = "arn:aws:secretsmanager:eu-central-1:090146717911:secret:creds-gTGGRt"
 
 
 class CdkPipeline(Stack):
@@ -19,7 +19,7 @@ class CdkPipeline(Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         source_output = pipelines.CodePipelineSource.connection("tsv1982/aws_cdk", "pipeline",
-                                                                connection_arn="arn:aws:codestar-connections:ap-northeast-1:571847562388:connection/200c13ec-a117-4efb-b81c-0b93cba32197"
+                                                                connection_arn="arn:aws:codestar-connections:eu-central-1:090146717911:connection/133453b9-a51d-4e8f-95dc-c3b4d39065d3"
                                                                 )
 
         pipeline = pipelines.CodePipeline(self, "Pipeline",
@@ -42,4 +42,4 @@ class InfrastructureStage(Stage):
         rds_stack = RdsStack(self, "RdsStack", vpc=networking_stack.vpc, creds_arn=DB_CREDS_ARN)
         ecs_stack = TsvEcsStack(self, "TsvEcsStack", vpc=networking_stack.vpc, db_secret=rds_stack.db_credentials)
         ecs_stack.add_dependency(rds_stack)
-        PipelineStack(self, "PipelineStack", service=ecs_stack.service)
+#      PipelineStack(self, "PipelineStack", service=ecs_stack.service)

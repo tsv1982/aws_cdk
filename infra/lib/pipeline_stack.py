@@ -8,7 +8,7 @@ from aws_cdk import (
 
 from constructs import Construct
 
-CONNECTION_ARN = "arn:aws:codestar-connections:eu-central-1:090146717911:connection/133453b9-a51d-4e8f-95dc-c3b4d39065d3"
+CONNECTION_ARN = "arn:aws:codestar-connections:eu-central-1:090146717911:connection/e6ba6471-62ea-4902-98dd-3e79e9187ded"
 
 
 class PipelineStack(Stack):

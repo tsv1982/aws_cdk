@@ -11,7 +11,7 @@ from infra.lib.rds_stack import RdsStack
 from infra.lib.tsv_ecs_stack import TsvEcsStack
 from infra.lib.pipeline_stack import PipelineStack
 
-DB_CREDS_ARN = "arn:aws:secretsmanager:eu-central-1:090146717911:secret:creds-gTGGRt"
+DB_CREDS_ARN = "arn:aws:secretsmanager:eu-central-1:090146717911:secret:creds1-0eiTOv"
 
 
 class CdkPipeline(Stack):
@@ -19,7 +19,7 @@ class CdkPipeline(Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         source_output = pipelines.CodePipelineSource.connection("tsv1982/aws_cdk", "infrastructure",
-                                                                connection_arn="arn:aws:codestar-connections:eu-central-1:090146717911:connection/133453b9-a51d-4e8f-95dc-c3b4d39065d3"
+                                                                connection_arn="arn:aws:codestar-connections:eu-central-1:090146717911:connection/e6ba6471-62ea-4902-98dd-3e79e9187ded"
                                                                 )
 
         pipeline = pipelines.CodePipeline(self, "Pipeline",

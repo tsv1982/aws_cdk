@@ -8,7 +8,7 @@ from aws_cdk import (
 
 from constructs import Construct
 
-CONNECTION_ARN = "arn:aws:codestar-connections:eu-central-1:090146717911:connection/e6ba6471-62ea-4902-98dd-3e79e9187ded"
+CONNECTION_ARN = "arn:aws:codestar-connections:eu-central-1:355731635752:connection/6ed03f2c-4650-4c94-a941-0fda942e898d"
 
 
 class PipelineStack(Stack):
@@ -25,10 +25,10 @@ class PipelineStack(Stack):
                                                       "phases": {
                                                           "pre_build": {
                                                               "commands": [
-                                                                  'REPOSITORY_URI=090146717911.dkr.ecr.eu-central-1.amazonaws.com/tsv-hello',
+                                                                  'REPOSITORY_URI=355731635752.dkr.ecr.eu-central-1.amazonaws.com/tsv-hello',
                                                                   'COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)',
                                                                   'IMAGE_TAG=${COMMIT_HASH:=latest}',
-                                                                  "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 090146717911.dkr.ecr.eu-central-1.amazonaws.com"
+                                                                  "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 355731635752.dkr.ecr.eu-central-1.amazonaws.com"
                                                               ]
                                                           },
                                                           "build": {"commands": [
@@ -36,7 +36,7 @@ class PipelineStack(Stack):
                                                               "docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG",
                                                               "docker push $REPOSITORY_URI:$IMAGE_TAG",
                                                               "docker push $REPOSITORY_URI:latest",
-                                                              'printf \'[{"name":".venv-hello","imageUri":"%s"}]\' "$REPOSITORY_URI:$IMAGE_TAG" > imagedefinitions.json'
+                                                              'printf \'[{"name":"tsv-hello","imageUri":"%s"}]\' "$REPOSITORY_URI:$IMAGE_TAG" > imagedefinitions.json'
                                                           ]}},
                                                       'artifacts': {
                                                           'files': [

@@ -19,7 +19,7 @@ class CdkPipeline(Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         source_output = pipelines.CodePipelineSource.connection("tsv1982/aws_cdk", "infrastructure",
-                                                                connection_arn="arn:aws:codestar-connections:eu-central-1:355731635752:connection/6ed03f2c-4650-4c94-a941-0fda942e898d"
+                                                                connection_arn="arn:aws:codestar-connections:eu-central-1:046550729439:connection/900ed722-44f3-479e-a98f-386bc11937d6"
                                                                 )
 
         pipeline = pipelines.CodePipeline(self, "Pipeline",

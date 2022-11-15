@@ -25,10 +25,10 @@ class PipelineStack(Stack):
                                                       "phases": {
                                                           "pre_build": {
                                                               "commands": [
-                                                                  'REPOSITORY_URI=355731635752.dkr.ecr.eu-central-1.amazonaws.com/tsv-hello',
+                                                                  'REPOSITORY_URI=046550729439.dkr.ecr.eu-central-1.amazonaws.com/tsv-hello',
                                                                   'COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)',
                                                                   'IMAGE_TAG=${COMMIT_HASH:=latest}',
-                                                                  "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 355731635752.dkr.ecr.eu-central-1.amazonaws.com"
+                                                                  "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 046550729439.dkr.ecr.eu-central-1.amazonaws.com"
                                                               ]
                                                           },
                                                           "build": {"commands": [

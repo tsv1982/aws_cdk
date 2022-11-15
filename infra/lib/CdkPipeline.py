@@ -11,7 +11,7 @@ from infra.lib.rds_stack import RdsStack
 from infra.lib.tsv_ecs_stack import TsvEcsStack
 from infra.lib.pipeline_stack import PipelineStack
 
-DB_CREDS_ARN = "arn:aws:secretsmanager:eu-central-1:355731635752:secret:creds-mKZX8B"
+DB_CREDS_ARN = "arn:aws:secretsmanager:eu-central-1:046550729439:secret:creds-LeHnTn"
 
 
 class CdkPipeline(Stack):

@@ -42,4 +42,4 @@ class InfrastructureStage(Stage):
         rds_stack = RdsStack(self, "RdsStack", vpc=networking_stack.vpc, creds_arn=DB_CREDS_ARN)
         ecs_stack = TsvEcsStack(self, "TsvEcsStack", vpc=networking_stack.vpc, db_secret=rds_stack.db_credentials)
         ecs_stack.add_dependency(rds_stack)
-#      PipelineStack(self, "PipelineStack", service=ecs_stack.service)
+        PipelineStack(self, "PipelineStack", service=ecs_stack.service)
